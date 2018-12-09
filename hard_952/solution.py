@@ -5,31 +5,26 @@ def greatest_common_factor(a, b):
 
 
 class Solution:
-    def largestComponentSize(self, A: list):
-        """
-        :type A: List[int]
-        :rtype: int
-        """
+    def largestComponentSize(self, A):
         if len(A) > 20_000:
             raise InvalidArraySizeException("Array size greater than 20000")
         for a in A:
             if a > 100_000:
                 raise InvalidElementException("Element greater than 100000")
         largest_component_size = 0
-        largest_component = []
-        for a_idx, a in enumerate(A):
-            largest_component.append(a)
-            A.pop(a_idx)
-            for b_idx, b in enumerate(largest_component):
-                for c_idx, c in enumerate(A):
+        while len(A) > 0:
+            largest_component = [A.pop(0)]
+            for b in largest_component:
+                rm_values = []
+                for c in A:
                     if greatest_common_factor(b, c) > 1:
                         largest_component.append(c)
-                        A.pop(c_idx)
+                        rm_values.append(c)
+                for r in rm_values:
+                    A.remove(r)
             largest_component_size = max(largest_component_size, len(largest_component))
-            largest_component = []
-
         return largest_component_size
-                        
+
 
 class InvalidElementException(Exception):
     def __init__(self, message):
