@@ -5,13 +5,13 @@ class Node:
         self.size = 1
 
 
-def find(node: Node):
+def find(node):
     if node.parent.value != node.value:
         node.parent = find(node.parent)
     return node.parent
 
 
-def union(node1: Node, node2: Node):
+def union(node1, node2):
     root1 = find(node1)
     root2 = find(node2)
     if root1.value == root2.value:
@@ -32,10 +32,10 @@ class Solution:
         for a in A:
             node = Node(a)
             nodes.append(node)
-        largest_root: Node = None
+        largest_root = None
         for i in range(2, int(max_value)):
             nodes_to_merge = []
-            tmp_root: Node = None
+            tmp_root = None
             for node in nodes:
                 if node.value % i == 0:
                     nodes_to_merge.append(node)
