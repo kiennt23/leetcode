@@ -1,7 +1,7 @@
 import json
 import random
 import unittest
-from hard_952.solution_union_find import Solution
+from hard_952.solution import Solution
 
 
 class TestSolution(unittest.TestCase):
