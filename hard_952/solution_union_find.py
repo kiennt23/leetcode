@@ -1,11 +1,8 @@
 class Node:
-    def __init__(self, index):
-        self.value = index
+    def __init__(self, value):
+        self.value = value
         self.parent = self
         self.size = 1
-
-    def __str__(self):
-        return '[' + str(self.value) + ',' + str(self.parent.value) + ',' + str(self.size) + ']'
 
 
 def find(node: Node):
