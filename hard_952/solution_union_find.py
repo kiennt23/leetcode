@@ -27,13 +27,22 @@ def union(node1, node2):
 
 class Solution:
     def largestComponentSize(self, A):
-        max_value = max(A)
+        max_value = int(max(A))
         nodes = []
         for a in A:
             node = Node(a)
             nodes.append(node)
         largest_root = None
-        for i in range(2, int(max_value)):
+        prime_numbers = []
+        from math import sqrt
+        for i in range(2, max_value):
+            prime = True
+            for j in range(2, int(sqrt(i)) + 1):
+                if i % j == 0:
+                    prime = False
+            if prime:
+                prime_numbers.append(i)
+        for i in prime_numbers:
             nodes_to_merge = []
             tmp_root = None
             for node in nodes:
