@@ -32,30 +32,35 @@ def union(node1, node2):
 
 class Solution:
     def largestComponentSize(self, A):
-        max_value = int(max(A))
+
+        def prime_factors(n):  # Prime factor decomposition
+            out = set()
+            while n % 2 == 0:
+                out.add(2)
+                n //= 2
+            from math import sqrt
+            for i in range(3, int(sqrt(n))+1, 2):
+                while n % i == 0:
+                    out.add(i)
+                    n //= i
+            if n > 2:
+                out.add(n)
+            return out
+
         nodes = []
         for a in A:
             node = Node(a)
             nodes.append(node)
         largest_root = None
-        prime_numbers = []
-        from math import sqrt
-        for i in range(2, max_value):
-            prime = True
-            for j in range(2, int(sqrt(i)) + 1):
-                if i % j == 0:
-                    prime = False
-                    break
-            if prime:
-                prime_numbers.append(i)
-        for i in prime_numbers:
-            nodes_to_merge = []
-            tmp_root = None
-            for node in nodes:
-                if node.value % i == 0:
-                    nodes_to_merge.append(node)
-            if len(nodes_to_merge) > 1:
-                tmp_root = reduce(union, nodes_to_merge)
-            if tmp_root is not None:
-                largest_root = tmp_root if largest_root is None or largest_root.size < tmp_root.size else largest_root
-        return largest_root.size if largest_root is not None else 1
+        prime_to_nodes = {}
+        for node in nodes:
+            primes = prime_factors(node.value)
+            for prime in primes:
+                tmp_root = node
+                if prime in prime_to_nodes:
+                    tmp_root = union(node, prime_to_nodes[prime])
+                if tmp_root is not None:
+                    prime_to_nodes[prime] = tmp_root
+        for key, value in prime_to_nodes.items():
+            largest_root = value if largest_root is None or largest_root.size < value.size else largest_root
+        return largest_root.size if largest_root is not None else 0
